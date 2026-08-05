@@ -1,0 +1,37 @@
+# Environment
+.venv/
+env/
+venv/
+ENV/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Datasets & Large Data Files
+datasets/*/
+datasets/*.zip
+datasets/*.tar.gz
+datasets/*.tar
+
+# Models & Weights
+*.pt
+*.onnx
+*.engine
+*.tflite
+
+# Training Runs & Logs
+runs/
+*.log
+
+# Jupyter Notebook Checkpoints
+.ipynb_checkpoints/
+
+# macOS system files
+.DS_Store
+
+# IDE / Editor settings
+.vscode/
+.idea/

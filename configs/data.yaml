@@ -1,0 +1,11 @@
+train: /Users/kommusaishruthin/Downloads/NagarSeva-AI/datasets/road_damage/RDD2022/train/images
+val: /Users/kommusaishruthin/Downloads/NagarSeva-AI/datasets/road_damage/RDD2022/valid/images
+test: /Users/kommusaishruthin/Downloads/NagarSeva-AI/datasets/road_damage/RDD2022/test/images
+
+nc: 4
+
+names:
+  0: longitudinal_crack
+  1: transverse_crack
+  2: alligator_crack
+  3: pothole

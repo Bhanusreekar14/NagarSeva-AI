@@ -1,0 +1,12 @@
+# NagarSeva-AI — RDD2022 YOLO Dataset Configuration
+path: /Users/kommusaishruthin/Downloads/NagarSeva-AI/datasets/road_damage/RDD2022
+train: train/images
+val: valid/images
+test: test/images
+
+# Class Mapping
+names:
+  0: longitudinal_crack
+  1: transverse_crack
+  2: alligator_crack
+  3: pothole

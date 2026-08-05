@@ -1,0 +1,11 @@
+torch
+torchvision
+torchaudio
+ultralytics
+opencv-python
+numpy
+pandas
+matplotlib
+jupyter
+notebook
+scikit-learn
