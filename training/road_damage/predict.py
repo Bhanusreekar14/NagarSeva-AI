@@ -1,6 +1,7 @@
 import sys
 import json
 import os
+# pyrefly: ignore [missing-import]
 from ultralytics import YOLO
 
 BUSINESS_CATEGORY_MAP = {

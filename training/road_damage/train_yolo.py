@@ -1,5 +1,6 @@
 import os
 import shutil
+# pyrefly: ignore [missing-import]
 import torch
 import ultralytics
 from ultralytics import YOLO
@@ -12,27 +13,30 @@ def main():
     device = 'mps' if torch.backends.mps.is_available() else ('cuda' if torch.cuda.is_available() else 'cpu')
     print(f"Hardware Accelerator: {device.upper()}")
     
-    config_path = 'datasets/road_damage/data.yaml'
+    config_path = 'configs/dataset.yaml'
+    if not os.path.exists(config_path):
+        config_path = '../../configs/dataset.yaml'
+        
     print(f"Loading dataset configuration from: {config_path}")
     
     # Initialize YOLO model
-    model = YOLO('yolo11n.pt')
+    model = YOLO('yolov8n.pt')
     
     print("Starting YOLO Model Training on RDD2022...")
     results = model.train(
         data=config_path,
         epochs=50,
         imgsz=640,
-        batch=8,
+        batch=16,
         device=device,
-        workers=2,
-        project='runs',
-        name='road_damage_v1'
+        project='runs/road_damage',
+        name='rdd2022_yolo'
     )
     
     print("\nModel Training Complete!")
     
-    save_dir = getattr(model.trainer, 'save_dir', 'runs/road_damage_v1')
+    # Save best weights to models/road_damage/best.pt
+    save_dir = getattr(model.trainer, 'save_dir', 'runs/road_damage/rdd2022_yolo')
     best_weights_src = os.path.join(save_dir, 'weights', 'best.pt')
     dest_weights = 'models/road_damage/best.pt'
     
