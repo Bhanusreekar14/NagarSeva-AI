@@ -1,6 +1,6 @@
 from ultralytics import YOLO
 
-model = YOLO("../../models/road_damage/best.pt")
+model = YOLO("runs/garbage_v1/weights/best.pt")
 
 results = model.predict(
     source="sample.jpg",
@@ -10,4 +10,3 @@ results = model.predict(
 
 for result in results:
     print(result.boxes)
-
