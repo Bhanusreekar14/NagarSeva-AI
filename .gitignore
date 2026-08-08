@@ -35,3 +35,4 @@ runs/
 # IDE / Editor settings
 .vscode/
 .idea/
+.env
