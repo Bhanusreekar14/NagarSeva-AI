@@ -16,6 +16,7 @@ def persist_ai_complaint(
     latitude=None,
     longitude=None,
     address=None,
+    location_source=None,
     image_url=None,
 ):
     complaint_number = generate_complaint_number()
@@ -36,6 +37,7 @@ def persist_ai_complaint(
         latitude=latitude,
         longitude=longitude,
         address=address,
+        location_source=location_source,
         image_url=image_url,
     )
 

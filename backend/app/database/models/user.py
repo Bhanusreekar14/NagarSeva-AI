@@ -27,6 +27,14 @@ class User(Base):
         default="Citizen",
         nullable=False
     )
+    address: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    id_proof_type: Mapped[str | None] = mapped_column(String(50), nullable=True)
+    id_proof_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    verification_status: Mapped[str] = mapped_column(
+        String(50),
+        default="Pending",
+        nullable=False
+    )
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
@@ -36,6 +44,7 @@ class User(Base):
 
     complaints = relationship(
         "Complaint",
+        foreign_keys="[Complaint.user_id]",
         back_populates="user",
         cascade="all, delete-orphan"
     )

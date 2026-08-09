@@ -1,6 +1,4 @@
 from app.agents.state import AgentState
-from app.schemas.image_response import ImageResponse
-from app.services.complaint_service import complaint_service
 from app.database.connection import SessionLocal
 from app.services.complaint_persistence import persist_ai_complaint
 
@@ -11,20 +9,7 @@ def notification_agent_node(state: AgentState) -> AgentState:
     Generates official tracking ID, resolution SLA timeframe,
     persists complaint to database, and formats citizen response message.
     """
-    fake_ai_res = ImageResponse(
-        success=True,
-        detected=state.get("detected", True),
-        module=state.get("module", "Multi-Agent AI"),
-        category=state.get("category", "CIVIC_ISSUE"),
-        sub_category=state.get("sub_category", "General Issue"),
-        confidence=state.get("confidence", 0.85),
-        severity=state.get("severity", "Medium"),
-        department=state.get("department", "General Municipal Department")
-    )
-    
-    complaint = complaint_service.create_complaint_from_ai(fake_ai_res)
-    
-    # Persist to Supabase DB
+    # Persist to Supabase DB as the single source of truth
     db = SessionLocal()
     try:
         complaint_dict = {
@@ -40,12 +25,17 @@ def notification_agent_node(state: AgentState) -> AgentState:
             db=db,
             result=complaint_dict,
             description=state.get("complaint_text") or state.get("description"),
-            image_url=state.get("image_path")
+            image_url=state.get("image_path"),
+            user_id=state.get("user_id"),
+            latitude=state.get("latitude"),
+            longitude=state.get("longitude"),
+            address=state.get("address"),
+            location_source=state.get("location_source"),
         )
         complaint_id = db_complaint.complaint_number
     except Exception as e:
         print(f"Error persisting complaint to DB: {e}")
-        complaint_id = complaint.complaint_id
+        complaint_id = f"NGS-ERR-{state.get('category', 'CIVIC')[:3]}"
     finally:
         db.close()
 

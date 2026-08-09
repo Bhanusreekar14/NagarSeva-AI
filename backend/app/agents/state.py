@@ -10,6 +10,7 @@ class AgentState(TypedDict, total=False):
     complaint_text: Optional[str]
     question: Optional[str]
     module_hint: Optional[str]
+    user_id: Optional[str]
     
     detected: Optional[bool]
     module: Optional[str]
@@ -19,6 +20,11 @@ class AgentState(TypedDict, total=False):
     severity: Optional[str]
     department: Optional[str]
     
+    latitude: Optional[float]
+    longitude: Optional[float]
+    address: Optional[str]
+    location_source: Optional[str]
+
     complaint_id: Optional[str]
     answer: Optional[str]
     sources: Optional[List[str]]

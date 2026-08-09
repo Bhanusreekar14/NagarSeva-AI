@@ -22,6 +22,10 @@ datasets/*.tar
 *.engine
 *.tflite
 
+# Uploaded Media & User Artifacts
+backend/uploads/*
+!backend/uploads/.gitkeep
+
 # Training Runs & Logs
 runs/
 *.log

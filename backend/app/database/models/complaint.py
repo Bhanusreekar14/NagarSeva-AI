@@ -31,6 +31,13 @@ class Complaint(Base):
         index=True
     )
 
+    assigned_volunteer_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("users.id"),
+        nullable=True,
+        index=True
+    )
+
     category: Mapped[str] = mapped_column(String(100), nullable=False)
     sub_category: Mapped[str | None] = mapped_column(String(100))
     description: Mapped[str | None] = mapped_column(Text)
@@ -62,6 +69,7 @@ class Complaint(Base):
     latitude: Mapped[float | None] = mapped_column(Float)
     longitude: Mapped[float | None] = mapped_column(Float)
     address: Mapped[str | None] = mapped_column(String(500))
+    location_source: Mapped[str | None] = mapped_column(String(50))
 
     image_url: Mapped[str | None] = mapped_column(String(500))
 
@@ -79,7 +87,8 @@ class Complaint(Base):
         nullable=False
     )
 
-    user = relationship("User", back_populates="complaints")
+    user = relationship("User", foreign_keys=[user_id], back_populates="complaints")
+    assigned_volunteer = relationship("User", foreign_keys=[assigned_volunteer_id])
 
     attachments = relationship(
         "Attachment",

@@ -3,6 +3,13 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import ReportComplaint from "./pages/ReportComplaint";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import TrackComplaint from "./pages/TrackComplaint";
+import AIAssistant from "./pages/AIAssistant";
+import CitizenDashboard from "./pages/CitizenDashboard";
+import VolunteerPortal from "./pages/VolunteerPortal";
+import AdminDashboard from "./pages/AdminDashboard";
 
 function Placeholder({ title }) {
   return (
@@ -28,15 +35,18 @@ export default function App() {
           element={<ReportComplaint />}
         />
 
-        <Route
-          path="/track"
-          element={<Placeholder title="Track Your Complaint" />}
-        />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
-        <Route
-          path="/assistant"
-          element={<Placeholder title="NagarSeva AI Assistant" />}
-        />
+        <Route path="/track" element={<TrackComplaint />} />
+
+        <Route path="/assistant" element={<AIAssistant />} />
+
+        <Route path="/dashboard" element={<CitizenDashboard />} />
+
+        <Route path="/volunteer" element={<VolunteerPortal />} />
+
+        <Route path="/admin" element={<AdminDashboard />} />
       </Routes>
     </BrowserRouter>
   );

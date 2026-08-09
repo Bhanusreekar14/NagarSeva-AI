@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 
 from app.database.models.user import User
 from app.database.models.complaint import Complaint
+from app.database.models.attachment import Attachment
 from app.database.models.ai_prediction import AIPrediction
 from app.database.models.complaint_history import ComplaintHistory
 
@@ -19,6 +20,7 @@ def create_complaint(
     latitude=None,
     longitude=None,
     address=None,
+    location_source=None,
     image_url=None,
 ):
     complaint = Complaint(
@@ -33,6 +35,7 @@ def create_complaint(
         latitude=latitude,
         longitude=longitude,
         address=address,
+        location_source=location_source,
         image_url=image_url,
         status="Pending",
     )
@@ -42,6 +45,25 @@ def create_complaint(
     db.refresh(complaint)
 
     return complaint
+
+
+def create_attachment(
+    db: Session,
+    complaint_id,
+    file_name: str,
+    file_url: str,
+    file_type: str | None = None,
+):
+    attachment = Attachment(
+        complaint_id=complaint_id,
+        file_name=file_name,
+        file_url=file_url,
+        file_type=file_type,
+    )
+    db.add(attachment)
+    db.commit()
+    db.refresh(attachment)
+    return attachment
 
 
 def get_complaint(db: Session, complaint_number: str):
@@ -59,6 +81,22 @@ def get_complaints(
 ):
     return (
         db.query(Complaint)
+        .order_by(Complaint.created_at.desc())
+        .offset(skip)
+        .limit(limit)
+        .all()
+    )
+
+
+def get_user_complaints(
+    db: Session,
+    user_id,
+    skip: int = 0,
+    limit: int = 50,
+):
+    return (
+        db.query(Complaint)
+        .filter(Complaint.user_id == user_id)
         .order_by(Complaint.created_at.desc())
         .offset(skip)
         .limit(limit)
