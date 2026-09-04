@@ -2,25 +2,28 @@ from ultralytics import YOLO
 from pathlib import Path
 import os
 
-# Primary model paths in order of preference
-MODEL_PATH = Path("backend/app/ml/road_damage/best.pt")
+BASE_DIR = Path(__file__).resolve().parent.parent.parent # backend root directory
+ROOT_DIR = BASE_DIR.parent # repository root directory
+
+MODEL_PATH = BASE_DIR / "app/ml/road_damage/best.pt"
 
 model = None
 
 def get_model_path() -> Path:
     alt_paths = [
-        Path("backend/app/ml/road_damage/best.pt"),
-        Path("app/ml/road_damage/best.pt"),
-        Path("models/road_damage/best.pt"),
-        Path("../models/road_damage/best.pt"),
-        Path("runs/road_damage/weights/best.pt"),
-        Path("yolo11n.pt"),
-        Path("yolov8n.pt")
+        BASE_DIR / "app/ml/road_damage/best.pt",
+        ROOT_DIR / "models/road_damage/best.pt",
+        BASE_DIR / "models/road_damage/best.pt",
+        ROOT_DIR / "runs/road_damage/weights/best.pt",
+        ROOT_DIR / "yolo11n.pt",
+        ROOT_DIR / "yolov8n.pt",
+        BASE_DIR / "yolo11n.pt",
+        BASE_DIR / "yolov8n.pt"
     ]
     for p in alt_paths:
         if p.exists():
             return p
-    return MODEL_PATH
+    return ROOT_DIR / "yolov8n.pt"
 
 def load_model():
     global model
@@ -30,13 +33,16 @@ def load_model():
     return model
 
 
-def predict(image_path):
-    model_instance = load_model()
+def predict(image_path: str):
+    try:
+        model_instance = load_model()
+        results = model_instance.predict(
+            source=image_path,
+            conf=0.25,
+            verbose=False
+        )
+        return results
+    except Exception as e:
+        print(f"[Road Damage AI] Prediction failed for {image_path}: {e}")
+        return []
 
-    results = model_instance.predict(
-        source=image_path,
-        conf=0.5,
-        verbose=False
-    )
-
-    return results
