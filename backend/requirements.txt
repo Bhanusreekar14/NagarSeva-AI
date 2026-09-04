@@ -13,3 +13,6 @@ ultralytics>=8.0.0
 torch>=2.0.0
 torchvision>=0.15.0
 opencv-python-headless>=4.8.0
+langchain-text-splitters>=0.0.1
+langgraph>=0.0.10
+langchain-core>=0.1.0
