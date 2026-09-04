@@ -35,6 +35,7 @@ import {
   updateVolunteerTaskStatus,
   uploadVolunteerEvidence,
   assignVolunteerTask,
+  API_BASE_URL,
 } from "../services/api";
 
 export default function VolunteerPortal() {
@@ -190,7 +191,7 @@ export default function VolunteerPortal() {
   const getImageUrl = (url) => {
     if (!url) return null;
     if (url.startsWith("http://") || url.startsWith("https://")) return url;
-    return `http://127.0.0.1:8000${url.startsWith("/") ? "" : "/"}${url}`;
+    return `${API_BASE_URL}${url.startsWith("/") ? "" : "/"}${url}`;
   };
 
   // Metrics aggregates from real tasks list

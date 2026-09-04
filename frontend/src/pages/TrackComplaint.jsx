@@ -18,7 +18,7 @@ import {
   AlertTriangle,
   Sparkles,
 } from "lucide-react";
-import { getComplaintDetails, getComplaintTimeline } from "../services/api";
+import { getComplaintDetails, getComplaintTimeline, getImageUrl } from "../services/api";
 
 const STATUS_PIPELINE = [
   { id: "Pending", label: "Submitted", desc: "Logged in NagarSeva System" },
@@ -309,7 +309,7 @@ export default function TrackComplaint() {
                     {details.attachments.map((att, i) => (
                       <a
                         key={i}
-                        href={`http://127.0.0.1:8000${att.file_url}`}
+                        href={getImageUrl(att.file_url)}
                         target="_blank"
                         rel="noreferrer"
                         className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-emerald-50 hover:text-emerald-700 text-xs font-semibold text-slate-700 transition-colors border border-slate-200"

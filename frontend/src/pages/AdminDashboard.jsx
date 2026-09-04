@@ -37,6 +37,7 @@ import {
   getAdminVolunteers,
   assignComplaintToVolunteer,
   updateAdminComplaintStatus,
+  getImageUrl,
 } from "../services/api";
 
 export default function AdminDashboard() {
@@ -753,12 +754,12 @@ export default function AdminDashboard() {
                   {selectedComplaint.image_url && (
                     <div className="p-3 rounded-2xl border border-slate-200 bg-slate-50 space-y-2">
                       <img
-                        src={selectedComplaint.image_url.startsWith("http") ? selectedComplaint.image_url : `http://127.0.0.1:8000${selectedComplaint.image_url}`}
+                        src={getImageUrl(selectedComplaint.image_url)}
                         alt="Primary Issue Evidence"
                         className="w-full h-44 object-cover rounded-xl border border-slate-200 shadow-sm"
                       />
                       <a
-                        href={selectedComplaint.image_url.startsWith("http") ? selectedComplaint.image_url : `http://127.0.0.1:8000${selectedComplaint.image_url}`}
+                        href={getImageUrl(selectedComplaint.image_url)}
                         target="_blank"
                         rel="noreferrer"
                         className="text-[11px] font-bold text-emerald-600 hover:text-emerald-800 flex items-center gap-1 justify-center"
@@ -772,7 +773,7 @@ export default function AdminDashboard() {
                     <div key={i} className="p-3 rounded-2xl border border-slate-200 bg-slate-50 flex flex-col justify-between space-y-2">
                       {att.file_url?.match(/\.(jpg|jpeg|png|webp)$/i) ? (
                         <img
-                          src={`http://127.0.0.1:8000${att.file_url}`}
+                          src={getImageUrl(att.file_url)}
                           alt={att.file_name}
                           className="w-full h-36 object-cover rounded-xl border border-slate-200"
                         />
@@ -782,7 +783,7 @@ export default function AdminDashboard() {
                         </div>
                       )}
                       <a
-                        href={`http://127.0.0.1:8000${att.file_url}`}
+                        href={getImageUrl(att.file_url)}
                         target="_blank"
                         rel="noreferrer"
                         className="text-[11px] font-bold text-emerald-600 hover:text-emerald-800 flex items-center gap-1 justify-center"

@@ -27,7 +27,7 @@ import {
   TrendingUp,
   AlertTriangle,
 } from "lucide-react";
-import { getCitizenDashboard } from "../services/api";
+import { getCitizenDashboard, API_BASE_URL } from "../services/api";
 
 export default function CitizenDashboard() {
   const navigate = useNavigate();
@@ -95,7 +95,7 @@ export default function CitizenDashboard() {
   const getImageUrl = (url) => {
     if (!url) return null;
     if (url.startsWith("http://") || url.startsWith("https://")) return url;
-    return `http://127.0.0.1:8000${url.startsWith("/") ? "" : "/"}${url}`;
+    return `${API_BASE_URL}${url.startsWith("/") ? "" : "/"}${url}`;
   };
 
   const getProgressInfo = (status) => {
