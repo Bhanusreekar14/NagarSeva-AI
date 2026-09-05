@@ -6,6 +6,7 @@ def vision_agent_node(state: AgentState) -> AgentState:
     👁️ Vision Agent Node:
     Processes uploaded images via YOLOv11 Computer Vision models.
     """
+    print("[AGENT] image routing started")
     image_path = state.get("image_path")
     module_hint = state.get("module_hint")
     

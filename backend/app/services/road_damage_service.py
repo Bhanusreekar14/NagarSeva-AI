@@ -37,8 +37,10 @@ def load_model():
 
 def predict(image_path: str):
     try:
+        print("[AGENT] road model started")
         model_instance = load_model()
         if model_instance is None:
+            print("[AGENT] road model skipped (model not found)")
             return []
         results = model_instance.predict(
             source=image_path,
@@ -46,6 +48,7 @@ def predict(image_path: str):
             device="cpu",
             verbose=False
         )
+        print("[AGENT] road model completed")
         return results
     except Exception as e:
         print(f"[Road Damage AI] Prediction failed for {image_path}: {e}")

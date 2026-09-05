@@ -193,11 +193,13 @@ export default function ReportComplaint() {
       }
     } catch (error) {
       console.error("Complaint submission failed:", error);
-      const serverMsg =
-        error.response?.data?.detail ||
-        (typeof error.response?.data === "string" ? error.response.data : null) ||
-        error.message ||
-        "Unable to connect to NagarSeva AI backend.";
+      const isTimeout = error.code === "ECONNABORTED" || error.message?.includes("timeout");
+      const serverMsg = isTimeout
+        ? "Complaint submission timed out. The server took longer than 120 seconds to process."
+        : error.response?.data?.detail ||
+          (typeof error.response?.data === "string" ? error.response.data : null) ||
+          error.message ||
+          "Unable to connect to NagarSeva AI backend.";
       setSubmitError(serverMsg);
     } finally {
       setLoading(false);

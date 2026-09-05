@@ -50,6 +50,7 @@ def run_agent_workflow(
     request: AgentRunRequest,
     current_user: Optional[User] = Depends(get_current_user),
 ):
+    print("[AGENT] request received")
     req_type = request.type.lower()
     initial_state = {
         "request_type": req_type,
@@ -71,7 +72,9 @@ def run_agent_workflow(
     else:
         raise HTTPException(status_code=400, detail="Invalid request type. Must be 'image', 'text', or 'question'.")
 
+    print("[AGENT] workflow started")
     final_state = agent_app.invoke(initial_state)
+    print("[AGENT] workflow completed")
 
     return AgentRunResponse(
         status=final_state.get("status", "Completed"),
@@ -102,6 +105,7 @@ async def upload_image_and_run(
     location_source: Optional[str] = Form(None),
     current_user: Optional[User] = Depends(get_current_user),
 ):
+    print("[AGENT] request received")
     if not file.content_type.startswith("image/"):
         raise HTTPException(status_code=400, detail="Uploaded file must be an image.")
 
@@ -111,6 +115,9 @@ async def upload_image_and_run(
 
     with file_path.open("wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
+
+    print("[AGENT] image saved")
+    print("[AGENT] workflow started")
 
     initial_state = {
         "request_type": "image",
@@ -125,6 +132,7 @@ async def upload_image_and_run(
     }
 
     final_state = await asyncio.to_thread(agent_app.invoke, initial_state)
+    print("[AGENT] workflow completed")
 
     return AgentRunResponse(
         status=final_state.get("status", "Completed"),

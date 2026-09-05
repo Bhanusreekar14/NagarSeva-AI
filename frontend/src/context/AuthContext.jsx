@@ -16,10 +16,15 @@ export const AuthProvider = ({ children }) => {
           const userData = await getCurrentUserApi();
           setUser(userData);
         } catch (err) {
-          console.error("Session expired or invalid token", err);
-          localStorage.removeItem("nagarseva_token");
-          setToken(null);
-          setUser(null);
+          const status = err.response?.status;
+          if (status === 401 || status === 403) {
+            console.error("Session expired or invalid token", err);
+            localStorage.removeItem("nagarseva_token");
+            setToken(null);
+            setUser(null);
+          } else {
+            console.error("Failed to verify user session due to network/server error:", err);
+          }
         }
       }
       setLoading(false);

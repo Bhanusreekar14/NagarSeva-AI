@@ -33,7 +33,10 @@ export default function Login() {
       }
     } catch (err) {
       console.error("Login error:", err);
-      const msg = err.response?.data?.detail || "Invalid email or password.";
+      const isTimeout = err.code === "ECONNABORTED" || err.message?.includes("timeout");
+      const msg = isTimeout
+        ? "Connection timed out. The backend server may be taking longer to respond. Please try again."
+        : err.response?.data?.detail || "Invalid email or password.";
       setError(msg);
     } finally {
       setSubmitting(false);

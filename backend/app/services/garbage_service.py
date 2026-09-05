@@ -38,13 +38,16 @@ def predict(image_path: str):
     try:
         model_instance = load_model()
         if model_instance is None:
+            print("[AGENT] garbage model skipped")
             return []
+        print("[AGENT] garbage model started")
         results = model_instance.predict(
             source=image_path,
             conf=0.5,
             device="cpu",
             verbose=False
         )
+        print("[AGENT] garbage model completed")
         return results
     except Exception as e:
         print(f"[Garbage AI] Prediction failed for {image_path}: {e}")

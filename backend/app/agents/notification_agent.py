@@ -9,6 +9,8 @@ def notification_agent_node(state: AgentState) -> AgentState:
     Generates official tracking ID, resolution SLA timeframe,
     persists complaint to database, and formats citizen response message.
     """
+    print("[AGENT] notification started")
+    print("[AGENT] database save started")
     # Persist to Supabase DB as the single source of truth
     db = SessionLocal()
     try:
@@ -33,6 +35,7 @@ def notification_agent_node(state: AgentState) -> AgentState:
             location_source=state.get("location_source"),
         )
         complaint_id = db_complaint.complaint_number
+        print("[AGENT] database save completed")
     except Exception as e:
         print(f"Error persisting complaint to DB: {e}")
         complaint_id = f"NGS-ERR-{state.get('category', 'CIVIC')[:3]}"
@@ -63,5 +66,6 @@ def notification_agent_node(state: AgentState) -> AgentState:
     state["estimated_resolution_time"] = sla
     state["response_message"] = msg
     state["status"] = "Complaint Registered & Citizen Notified"
+    print("[AGENT] notification completed")
     
     return state
