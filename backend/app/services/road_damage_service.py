@@ -29,6 +29,8 @@ def load_model():
     global model
     if model is None:
         target_path = get_model_path()
+        if not target_path or not target_path.exists():
+            return None
         model = YOLO(target_path)
     return model
 
@@ -36,9 +38,12 @@ def load_model():
 def predict(image_path: str):
     try:
         model_instance = load_model()
+        if model_instance is None:
+            return []
         results = model_instance.predict(
             source=image_path,
             conf=0.25,
+            device="cpu",
             verbose=False
         )
         return results

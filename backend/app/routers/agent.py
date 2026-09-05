@@ -1,8 +1,9 @@
-from fastapi import APIRouter, Depends, UploadFile, File, Form, HTTPException
+import asyncio
 import shutil
 import uuid
 from pathlib import Path
 from typing import Optional, List
+from fastapi import APIRouter, Depends, UploadFile, File, Form, HTTPException
 from pydantic import BaseModel
 from app.agents.workflow import agent_app
 from app.database.models.user import User
@@ -123,7 +124,7 @@ async def upload_image_and_run(
         "user_id": str(current_user.id) if current_user else None,
     }
 
-    final_state = agent_app.invoke(initial_state)
+    final_state = await asyncio.to_thread(agent_app.invoke, initial_state)
 
     return AgentRunResponse(
         status=final_state.get("status", "Completed"),

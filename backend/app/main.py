@@ -15,12 +15,21 @@ from app.routers.dashboard import router as dashboard_router
 from app.routers.auth import router as auth_router
 from app.routers.volunteer import router as volunteer_router
 from app.routers.admin import router as admin_router
+from app.services.road_damage_service import load_model as load_road_damage_model
 
 app = FastAPI(
     title="NagarSeva AI",
     version="1.0",
     description="Intelligent Civic Issue Management & Multi-Agent Routing Engine"
 )
+
+@app.on_event("startup")
+def preload_yolo_model():
+    try:
+        load_road_damage_model()
+        print("✅ Road Damage YOLO model preloaded successfully.")
+    except Exception as e:
+        print(f"⚠️ Road Damage YOLO model preload warning: {e}")
 
 # Ensure uploads directory exists and mount static files
 uploads_dir = os.path.join(os.path.dirname(__file__), "../uploads")
